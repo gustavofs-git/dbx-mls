@@ -1,0 +1,27 @@
+name: CD Prod
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: prod   # MUST match federation policy subject exactly — case-sensitive
+    concurrency:
+      group: prod-deploy
+      cancel-in-progress: false
+    env:
+      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: databricks/setup-cli@v0.295.0
+      - run: databricks bundle deploy --target prod

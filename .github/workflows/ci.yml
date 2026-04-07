@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+
+permissions:
+  id-token: write   # REQUIRED for OIDC token issuance
+  contents: read
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - uses: databricks/setup-cli@v0.295.0
+      - run: databricks bundle validate
+      - run: pytest tests/unit/ --cov=src --cov-report=xml

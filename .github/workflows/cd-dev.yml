@@ -1,0 +1,26 @@
+name: CD Dev
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    # No environment key here — uses branch-scoped federation policy
+    # Adding an env-scoped key would break OIDC (policy subject is branch-scoped, not env-scoped)
+    env:
+      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: databricks/setup-cli@v0.295.0
+      - run: databricks bundle deploy --target dev
+      - run: databricks bundle run smoke_test_job --target dev
