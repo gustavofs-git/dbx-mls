@@ -42,7 +42,7 @@ CICD-01, CICD-02, CICD-03, CICD-04, CICD-05, CICD-06
 **Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: Repo scaffold, DABs `databricks.yml`, and workspace prerequisites
+- [x] 01-01: Repo scaffold, DABs `databricks.yml`, and workspace prerequisites
 - [ ] 01-02: OIDC federation and GitHub Actions CI/CD workflows
 - [ ] 01-03: Unity Catalog schemas, SP ownership grants, and Databricks Secrets
 - [ ] 01-04: Smoke-test job, end-to-end deploy validation, and `.gitignore` hardening
@@ -996,7 +996,7 @@ documented sufficiently to reproduce in under 15 minutes.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure, Governance & CI/CD Foundation | 0/4 | Not started | - |
+| 1. Infrastructure, Governance & CI/CD Foundation | 1/4 | In Progress|  |
 | 2. Bronze Ingestion Pipeline | 0/5 | Not started | - |
 | 3. Silver Transformation Layer | 0/5 | Not started | - |
 | 4. Gold Analytics Layer | 0/3 | Not started | - |

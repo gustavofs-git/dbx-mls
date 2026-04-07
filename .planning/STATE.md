@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-04-07T16:51:42.818Z"
-last_activity: 2026-04-07 — ROADMAP.md and STATE.md initialized after research phase
+status: executing
+stopped_at: Completed 01-01-PLAN.md (repo scaffold + databricks.yml bundle)
+last_updated: "2026-04-07T17:49:40.033Z"
+last_activity: 2026-04-07
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 4
+  completed_plans: 1
   percent: 0
 ---
 
@@ -23,14 +23,14 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 **Core value:** A recruiter or hiring manager can run this pipeline end-to-end in under 30
 minutes and see a real, parameterized, enterprise-pattern data product — not a tutorial skeleton.
 
-**Current focus:** Phase 1 — Infrastructure, Governance & CI/CD Foundation
+**Current focus:** Phase 01 — infrastructure-governance-ci-cd-foundation
 
 ## Current Position
 
-Phase: 1 of 5 (Infrastructure, Governance & CI/CD Foundation)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-04-07 — ROADMAP.md and STATE.md initialized after research phase
+Phase: 01 (infrastructure-governance-ci-cd-foundation) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-04-07
 
 Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 **Recent Trend:** Not yet established
 
 *Updated after each plan completion*
+| Phase 01 P01 | 4 | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Key constraints affecting every phase:
 - Phase 2: Dual-bucket rate limiter is mandatory before any volume API calls
 - Phase 3: `schemas/match_schema.py` is a hard gate — cannot write Silver without real Bronze data
 - Phase 3: `challenges` struct must be flattened to flat `chal_*` columns, NOT kept as STRUCT
+- [Phase 01]: workspace.host removed from databricks.yml — CLI v0.295.0 rejects variable interpolation for auth fields; DATABRICKS_HOST env var is the correct mechanism
+- [Phase 01]: singleNode cluster profile used (not singleUser — singleUser is a UC access mode, not a cluster profile)
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T16:51:42.816Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-infrastructure-governance-ci-cd-foundation/01-CONTEXT.md
+Last session: 2026-04-07T17:49:40.031Z
+Stopped at: Completed 01-01-PLAN.md (repo scaffold + databricks.yml bundle)
+Resume file: None

@@ -7,13 +7,13 @@
 
 ### Infrastructure & Governance (INFRA)
 
-- [ ] **INFRA-01**: Azure Databricks workspace provisioned with Unity Catalog enabled
+- [x] **INFRA-01**: Azure Databricks workspace provisioned with Unity Catalog enabled
 - [ ] **INFRA-02**: `lol_analytics` catalog created with `bronze`, `silver`, and `gold` schemas in Unity Catalog
 - [ ] **INFRA-03**: Service Principal created, assigned schema ownership from CI (not developer laptop) — prevents ownership lock-in
-- [ ] **INFRA-04**: Databricks Asset Bundles `databricks.yml` defines `dev` and `prod` targets with DBR 16.4 LTS cluster config
+- [x] **INFRA-04**: Databricks Asset Bundles `databricks.yml` defines `dev` and `prod` targets with DBR 16.4 LTS cluster config
 - [ ] **INFRA-05**: Riot API key stored in Databricks Secret Scope (`secrets/riot-api/key`) — never hardcoded
 - [ ] **INFRA-06**: Smoke-test DAB deploy succeeds end-to-end before any pipeline code is written
-- [ ] **INFRA-07**: `.gitignore` excludes all secrets, `.env` files, and Python artifacts
+- [x] **INFRA-07**: `.gitignore` excludes all secrets, `.env` files, and Python artifacts
 
 ### CI/CD Pipeline (CICD)
 
@@ -116,13 +116,13 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Pending |
 | INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Pending |
 | INFRA-06 | Phase 1 | Pending |
-| INFRA-07 | Phase 1 | Pending |
+| INFRA-07 | Phase 1 | Complete |
 | CICD-01 | Phase 1 | Pending |
 | CICD-02 | Phase 1 | Pending |
 | CICD-03 | Phase 1 | Pending |
