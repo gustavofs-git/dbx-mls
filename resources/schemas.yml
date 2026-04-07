@@ -1,0 +1,21 @@
+# Unity Catalog schema declarations.
+# IMPORTANT: Do NOT pre-create these schemas manually.
+# The CI SP must be the deploying identity on first deploy so it automatically owns these schemas.
+# See docs/setup.md for the required admin GRANT statements before first deploy.
+
+resources:
+  schemas:
+    bronze:
+      catalog_name: lol_analytics
+      name: bronze
+      comment: "Raw Riot API JSON responses — Bronze layer (dbx-mls)"
+
+    silver:
+      catalog_name: lol_analytics
+      name: silver
+      comment: "Schema-enforced typed Delta tables — Silver layer (dbx-mls)"
+
+    gold:
+      catalog_name: lol_analytics
+      name: gold
+      comment: "Analytics aggregations — Gold layer (dbx-mls)"

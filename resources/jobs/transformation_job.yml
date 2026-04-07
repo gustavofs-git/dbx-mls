@@ -1,0 +1,4 @@
+# Silver transformation job — defined in Phase 3.
+# Placeholder so databricks.yml include: resources/jobs/*.yml resolves without error.
+resources:
+  jobs: {}

@@ -1,0 +1,4 @@
+# Bronze ingestion job — defined in Phase 2.
+# Placeholder so databricks.yml include: resources/jobs/*.yml resolves without error.
+resources:
+  jobs: {}

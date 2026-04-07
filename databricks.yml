@@ -1,0 +1,23 @@
+bundle:
+  name: dbx-mls
+  databricks_cli_version: ">=0.250.0"
+
+include:
+  - resources/*.yml
+  - resources/jobs/*.yml
+
+variables:
+  sp_client_id:
+    description: "Service Principal client ID (UUID) used for prod run_as"
+
+targets:
+  dev:
+    mode: development
+    default: true
+
+  prod:
+    mode: production
+    workspace:
+      root_path: /Workspace/Shared/.bundle/dbx-mls/prod
+    run_as:
+      service_principal_name: ${var.sp_client_id}
