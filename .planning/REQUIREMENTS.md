@@ -17,12 +17,12 @@
 
 ### CI/CD Pipeline (CICD)
 
-- [ ] **CICD-01**: GitHub Actions `ci.yml` — runs `databricks bundle validate` + `pytest` on every push to any branch
-- [ ] **CICD-02**: GitHub Actions `cd-dev.yml` — deploys bundle to `dev` target on every push to `main`
-- [ ] **CICD-03**: GitHub Actions `cd-prod.yml` — deploys bundle to `prod` target only on release tags (`v*`), with manual approval gate via GitHub Environment protection
-- [ ] **CICD-04**: Authentication uses OIDC federation (Workload Identity) — zero long-lived secrets in GitHub
-- [ ] **CICD-05**: `setup-databricks-cli` action pins Databricks CLI version (`>=0.250.0`)
-- [ ] **CICD-06**: Prod deploy job is in a separate workflow with `concurrency` group to prevent parallel prod deploys
+- [x] **CICD-01**: GitHub Actions `ci.yml` — runs `databricks bundle validate` + `pytest` on every push to any branch
+- [x] **CICD-02**: GitHub Actions `cd-dev.yml` — deploys bundle to `dev` target on every push to `main`
+- [x] **CICD-03**: GitHub Actions `cd-prod.yml` — deploys bundle to `prod` target only on release tags (`v*`), with manual approval gate via GitHub Environment protection
+- [x] **CICD-04**: Authentication uses OIDC federation (Workload Identity) — zero long-lived secrets in GitHub
+- [x] **CICD-05**: `setup-databricks-cli` action pins Databricks CLI version (`>=0.250.0`)
+- [x] **CICD-06**: Prod deploy job is in a separate workflow with `concurrency` group to prevent parallel prod deploys
 
 ### Bronze Ingestion (BRZ)
 
@@ -123,12 +123,12 @@
 | INFRA-05 | Phase 1 | Pending |
 | INFRA-06 | Phase 1 | Pending |
 | INFRA-07 | Phase 1 | Complete |
-| CICD-01 | Phase 1 | Pending |
-| CICD-02 | Phase 1 | Pending |
-| CICD-03 | Phase 1 | Pending |
-| CICD-04 | Phase 1 | Pending |
-| CICD-05 | Phase 1 | Pending |
-| CICD-06 | Phase 1 | Pending |
+| CICD-01 | Phase 1 | Complete |
+| CICD-02 | Phase 1 | Complete |
+| CICD-03 | Phase 1 | Complete |
+| CICD-04 | Phase 1 | Complete |
+| CICD-05 | Phase 1 | Complete |
+| CICD-06 | Phase 1 | Complete |
 | BRZ-01 | Phase 2 | Pending |
 | BRZ-02 | Phase 2 | Pending |
 | BRZ-03 | Phase 2 | Pending |

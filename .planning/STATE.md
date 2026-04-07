@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md (repo scaffold + databricks.yml bundle)
-last_updated: "2026-04-07T17:49:40.033Z"
+stopped_at: "Checkpoint: 01-02 awaiting human-verify (CI green confirmation)"
+last_updated: "2026-04-07T17:53:53.769Z"
 last_activity: 2026-04-07
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -70,6 +70,8 @@ Key constraints affecting every phase:
 - Phase 3: `challenges` struct must be flattened to flat `chal_*` columns, NOT kept as STRUCT
 - [Phase 01]: workspace.host removed from databricks.yml — CLI v0.295.0 rejects variable interpolation for auth fields; DATABRICKS_HOST env var is the correct mechanism
 - [Phase 01]: singleNode cluster profile used (not singleUser — singleUser is a UC access mode, not a cluster profile)
+- [Phase 01-infrastructure-governance-ci-cd-foundation]: cd-dev.yml has no environment: key — uses branch-scoped OIDC federation policy (subject: ref:refs/heads/main)
+- [Phase 01-infrastructure-governance-ci-cd-foundation]: cd-prod.yml environment: prod must exactly match federation policy subject environment:prod (case-sensitive — silent 401 on mismatch)
 
 ### Pending Todos
 
@@ -85,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T17:49:40.031Z
-Stopped at: Completed 01-01-PLAN.md (repo scaffold + databricks.yml bundle)
+Last session: 2026-04-07T17:53:49.419Z
+Stopped at: Checkpoint: 01-02 awaiting human-verify (CI green confirmation)
 Resume file: None
