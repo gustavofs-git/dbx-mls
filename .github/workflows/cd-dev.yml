@@ -14,13 +14,17 @@ jobs:
     # No environment key here — uses branch-scoped federation policy
     # Adding an env-scoped key would break OIDC (policy subject is branch-scoped, not env-scoped)
     env:
-      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_AUTH_TYPE: azure-cli
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.DATABRICKS_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       - uses: databricks/setup-cli@v0.295.0
       - run: databricks bundle deploy --target dev
       - run: databricks bundle run smoke_test_job --target dev

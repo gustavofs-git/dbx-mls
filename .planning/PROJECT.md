@@ -6,7 +6,7 @@ A production-grade Data Engineering portfolio project that ingests League of Leg
 
 ## Core Value
 
-A recruiter or hiring manager can run this pipeline end-to-end in under 30 minutes and see a real, parameterized, enterprise-pattern data product — not a tutorial skeleton.
+A person can run this pipeline end-to-end in under 30 minutes and see a real, parameterized, enterprise-pattern data product — not a tutorial skeleton.
 
 ## Requirements
 
@@ -57,7 +57,7 @@ A recruiter or hiring manager can run this pipeline end-to-end in under 30 minut
 - [ ] Integration tests run against `dev` environment post-deploy
 
 **Agentic Showcase**
-- [ ] ai-dev-kit MCP configured so Claude can interact directly with the workspace
+- [ ] ai-dev-kit MCP configured so Claude can interact directly with the workspace, this should be featured in the text deliverable explained below
 - [ ] Each phase produces a LinkedIn deliverable: detailed article version + short post version
 
 ### Out of Scope
@@ -66,7 +66,7 @@ A recruiter or hiring manager can run this pipeline end-to-end in under 30 minut
 - **Real-time / streaming** — batch ingestion only for v1; streaming via Delta Live Tables is a future milestone
 - **Jira / team simulation integration** — explicitly planned for a future milestone, not v1
 - **Gold layer detailed design** — intentionally deferred until Silver data patterns are validated
-- **Multi-region simultaneous ingestion** — start with KR, parameters make region switching trivial without parallel support
+- **Multi-region/tier simultaneous ingestion** — start with KR/Challenger+Grandmaster, parameters make region/tier switching trivial without parallel support
 
 ## Context
 
