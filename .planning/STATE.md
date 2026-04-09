@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: "Checkpoint: 01-02 awaiting human-verify (CI green confirmation)"
-last_updated: "2026-04-09T10:27:10.646Z"
-last_activity: 2026-04-09 -- Phase 01 execution started
+stopped_at: Completed 01-04-PLAN.md — Phase 01 complete
+last_updated: "2026-04-09T16:11:16.693Z"
+last_activity: 2026-04-09
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 4
   percent: 0
 ---
 
@@ -28,9 +28,9 @@ minutes and see a real, parameterized, enterprise-pattern data product — not a
 ## Current Position
 
 Phase: 01 (infrastructure-governance-ci-cd-foundation) — EXECUTING
-Plan: 1 of 4
-Status: Executing Phase 01
-Last activity: 2026-04-09 -- Phase 01 execution started
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 
 *Updated after each plan completion*
 | Phase 01 P01 | 4 | 2 tasks | 16 files |
+| Phase 01 P04 | 240 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,9 @@ Key constraints affecting every phase:
 - [Phase 01]: singleNode cluster profile used (not singleUser — singleUser is a UC access mode, not a cluster profile)
 - [Phase 01-infrastructure-governance-ci-cd-foundation]: cd-dev.yml has no environment: key — uses branch-scoped OIDC federation policy (subject: ref:refs/heads/main)
 - [Phase 01-infrastructure-governance-ci-cd-foundation]: cd-prod.yml environment: prod must exactly match federation policy subject environment:prod (case-sensitive — silent 401 on mismatch)
+- [Phase 01]: Azure OIDC (azure-cli auth type) is the working auth path for this workspace — Databricks OIDC github-oidc auth type requires workspace-level federation policy not available in this tier
+- [Phase 01]: Use source: GIT for all DAB job notebook tasks — WORKSPACE source fails due to SP file access restrictions in Unity Catalog workspaces; GIT source pulls from public GitHub at runtime
+- [Phase 01]: data_security_mode: SINGLE_USER required on all job clusters in UC workspace — omitting causes cluster rejection
 
 ### Pending Todos
 
@@ -87,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T17:53:49.419Z
-Stopped at: Checkpoint: 01-02 awaiting human-verify (CI green confirmation)
+Last session: 2026-04-09T16:11:16.691Z
+Stopped at: Completed 01-04-PLAN.md — Phase 01 complete
 Resume file: None

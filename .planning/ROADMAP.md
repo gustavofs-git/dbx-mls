@@ -11,7 +11,7 @@ produces a verified, deployable artifact — nothing is speculative until it run
 
 ## Phases
 
-- [ ] **Phase 1: Infrastructure, Governance & CI/CD Foundation** - Prove the full deploy path before writing a single line of pipeline code
+- [x] **Phase 1: Infrastructure, Governance & CI/CD Foundation** - Prove the full deploy path before writing a single line of pipeline code (completed 2026-04-09)
 - [ ] **Phase 2: Bronze Ingestion Pipeline** - Ingest raw Riot API JSON to Unity Catalog Delta tables with a production-grade rate limiter
 - [ ] **Phase 3: Silver Transformation Layer** - Parse, flatten, and schema-enforce all Bronze JSON into typed Delta tables with full test coverage
 - [ ] **Phase 4: Gold Analytics Layer** - Aggregate Silver into queryable champion, pick/ban, and tier distribution analytics tables
@@ -45,7 +45,7 @@ Plans:
 - [x] 01-01: Repo scaffold, DABs `databricks.yml`, and workspace prerequisites
 - [x] 01-02: OIDC federation and GitHub Actions CI/CD workflows
 - [x] 01-03: Unity Catalog schemas, SP ownership grants, and Databricks Secrets
-- [ ] 01-04: Smoke-test job, end-to-end deploy validation, and `.gitignore` hardening
+- [x] 01-04: Smoke-test job, end-to-end deploy validation, and `.gitignore` hardening
 
 **UI hint**: no
 
@@ -996,7 +996,7 @@ documented sufficiently to reproduce in under 15 minutes.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure, Governance & CI/CD Foundation | 1/4 | In Progress|  |
+| 1. Infrastructure, Governance & CI/CD Foundation | 4/4 | Complete   | 2026-04-09 |
 | 2. Bronze Ingestion Pipeline | 0/5 | Not started | - |
 | 3. Silver Transformation Layer | 0/5 | Not started | - |
 | 4. Gold Analytics Layer | 0/3 | Not started | - |

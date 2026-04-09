@@ -12,7 +12,7 @@
 - [x] **INFRA-03**: Service Principal created, assigned schema ownership from CI (not developer laptop) — prevents ownership lock-in
 - [x] **INFRA-04**: Databricks Asset Bundles `databricks.yml` defines `dev` and `prod` targets with DBR 16.4 LTS cluster config
 - [x] **INFRA-05**: Riot API key stored in Databricks Secret Scope (`secrets/riot-api/key`) — never hardcoded
-- [ ] **INFRA-06**: Smoke-test DAB deploy succeeds end-to-end before any pipeline code is written
+- [x] **INFRA-06**: Smoke-test DAB deploy succeeds end-to-end before any pipeline code is written
 - [x] **INFRA-07**: `.gitignore` excludes all secrets, `.env` files, and Python artifacts
 
 ### CI/CD Pipeline (CICD)
@@ -73,7 +73,7 @@
 - [ ] **AGTC-01**: `ai-dev-kit` MCP configured locally so Claude can interact with the workspace via MCP tools (list tables, run jobs, query data)
 - [ ] **AGTC-02**: `README.md` includes architecture diagram, quickstart steps (< 30 min to running), and "How Claude built this" section
 - [ ] **AGTC-03**: `Makefile` provides `make setup`, `make test`, `make deploy-dev`, `make deploy-prod` targets
-- [ ] **AGTC-04**: Each phase produces a LinkedIn post pair: detailed article version + short summary version (committed to `docs/posts/`)
+- [x] **AGTC-04**: Each phase produces a LinkedIn post pair: detailed article version + short summary version (committed to `docs/posts/`)
 
 ## v2 Requirements
 
@@ -121,7 +121,7 @@
 | INFRA-03 | Phase 1 | Complete |
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
-| INFRA-06 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Complete |
 | INFRA-07 | Phase 1 | Complete |
 | CICD-01 | Phase 1 | Complete |
 | CICD-02 | Phase 1 | Complete |
@@ -164,7 +164,7 @@
 | AGTC-01 | Phase 5 | Pending |
 | AGTC-02 | Phase 5 | Pending |
 | AGTC-03 | Phase 5 | Pending |
-| AGTC-04 | Phase 1–5 | Pending |
+| AGTC-04 | Phase 1–5 | Complete |
 
 **Coverage:**
 - v1 requirements: 47 total
