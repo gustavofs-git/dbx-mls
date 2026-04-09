@@ -1,0 +1,35 @@
+# Smoke test job — permanent infrastructure health check.
+# Runs after every dev deploy via cd-dev.yml.
+# Per D-04: this job is NEVER removed after Phase 1.
+# Per D-05: cd-dev.yml triggers this after databricks bundle deploy --target dev.
+# Per D-06: validates secrets, UC access, and bronze table roundtrip.
+
+resources:
+  jobs:
+    smoke_test_job:
+      name: dbx-mls-smoke-test
+      timeout_seconds: 14400
+      tasks:
+        - task_key: smoke_test
+          notebook_task:
+            notebook_path: ${workspace.root_path}/files/notebooks/smoke_test.py
+            source: WORKSPACE
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+      job_clusters:
+        - job_cluster_key: job_cluster_shared
+          new_cluster:
+            spark_version: 16.4.x-scala2.12
+            node_type_id: Standard_F4s_v2
+            num_workers: 0
+            spark_conf:
+              spark.databricks.cluster.profile: singleNode
+              spark.master: local[*]
+            autotermination_minutes: 0
+            custom_tags:
+              project: dbx-mls
+              job: smoke-test
