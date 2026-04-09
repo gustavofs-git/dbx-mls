@@ -14,6 +14,7 @@ jobs:
     env:
       DATABRICKS_AUTH_TYPE: azure-cli
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      BUNDLE_VAR_sp_client_id: ${{ vars.DATABRICKS_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: azure/login@v2
