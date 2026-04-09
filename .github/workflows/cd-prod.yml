@@ -26,7 +26,6 @@ jobs:
         with:
           client-id: ${{ vars.DATABRICKS_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
-          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
       - uses: databricks/setup-cli@v0.295.0
       - run: databricks bundle deploy --target prod
