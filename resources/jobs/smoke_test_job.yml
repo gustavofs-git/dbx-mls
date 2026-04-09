@@ -11,9 +11,8 @@ resources:
       timeout_seconds: 14400
       tasks:
         - task_key: smoke_test
-          notebook_task:
-            notebook_path: ${workspace.root_path}/files/notebooks/smoke_test.py
-            source: WORKSPACE
+          spark_python_task:
+            python_file: dbfs:/dbx-mls/notebooks/smoke_test.py
           job_cluster_key: job_cluster_shared
           libraries:
             - pypi:
