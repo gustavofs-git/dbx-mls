@@ -18,7 +18,7 @@ targets:
   dev:
     default: true
     workspace:
-      root_path: /Workspace/Shared/.bundle/dbx-mls/dev
+      root_path: /Workspace/Users/${var.sp_client_id}/.bundle/dbx-mls/dev
 
   prod:
     mode: production
