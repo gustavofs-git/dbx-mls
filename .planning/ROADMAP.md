@@ -44,7 +44,7 @@ CICD-01, CICD-02, CICD-03, CICD-04, CICD-05, CICD-06
 Plans:
 - [x] 01-01: Repo scaffold, DABs `databricks.yml`, and workspace prerequisites
 - [x] 01-02: OIDC federation and GitHub Actions CI/CD workflows
-- [ ] 01-03: Unity Catalog schemas, SP ownership grants, and Databricks Secrets
+- [x] 01-03: Unity Catalog schemas, SP ownership grants, and Databricks Secrets
 - [ ] 01-04: Smoke-test job, end-to-end deploy validation, and `.gitignore` hardening
 
 **UI hint**: no
