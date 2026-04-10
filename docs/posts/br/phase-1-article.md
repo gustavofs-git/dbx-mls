@@ -69,48 +69,37 @@ Estrutura do bundle
 O `databricks.yml` é o ponto de entrada do bundle e declara targets e variáveis:
 
 ```yaml
-
 bundle:
-
-name: dbx-mls
-
-databricks_cli_version: “>=0.250.0”
+  name: dbx-mls
+  databricks_cli_version: “>=0.250.0”
 
 include:
-
-  - resources/*.yml
-
   - resources/jobs/*.yml
+  - resources/schemas.yml
 
 variables:
+  sp_client_id:
+    description: “Client ID (UUID) do Service Principal usado para run_as em prod”
 
-sp_client_id:
-
-description: “Client ID (UUID) do Service Principal usado para run_as em prod”
+permissions:
+  - service_principal_name: ${var.sp_client_id}
+    level: CAN_MANAGE
 
 targets:
+  dev:
+    default: true
+    workspace:
+      root_path: /Workspace/Users/${var.sp_client_id}/.bundle/dbx-mls/dev
 
-dev:
-
-mode: development
-
-default: true
-
-prod:
-
-mode: production
-
-workspace:
-
-root_path: /Workspace/Shared/.bundle/dbx-mls/prod
-
-run_as:
-
-service_principal_name: ${var.sp_client_id}
-
+  prod:
+    mode: production
+    workspace:
+      root_path: /Workspace/Shared/.bundle/dbx-mls/prod
+    run_as:
+      service_principal_name: ${var.sp_client_id}
 ```
 
-`mode: development` adiciona prefixo de namespace a todos os recursos em dev, evitando colisões quando múltiplos engenheiros fazem deploy no mesmo workspace. `run_as` no target prod garante que jobs de produção executem sob identidade do SP — não do usuário que disparou o deploy — requisito de auditoria em ambientes enterprise.
+O `include:` lista explicitamente os jobs e o arquivo de schemas — `resources/jobs/*.yml` captura automaticamente novos jobs adicionados nas fases seguintes sem alterar o bundle raiz. O bloco `permissions:` garante que o SP tenha `CAN_MANAGE` sobre o path do bundle deployado; sem ele, o job cluster não consegue acessar os artefatos em runtime. O target de dev não usa `mode: development` — esse flag foi removido porque gera paths com prefixo de usuário que o SP não consegue acessar; em vez disso, o dev usa um `root_path` fixo no diretório do próprio SP no workspace. O `run_as` no target prod garante que jobs de produção executem sob identidade do SP — não do usuário que disparou o deploy — requisito de auditoria em ambientes enterprise.
 
 Limitação conhecida da CLI v0.295.0
 
@@ -119,37 +108,20 @@ Limitação conhecida da CLI v0.295.0
 Schemas como recursos gerenciados
 
 ```yaml
-
-resources/schemas.yml
-
 resources:
-
-schemas:
-
-bronze:
-
-catalog_name: lol_analytics
-
-name: bronze
-
-comment: “Camada de ingestão raw — dados armazenados como recebidos da fonte”
-
-silver:
-
-catalog_name: lol_analytics
-
-name: silver
-
-comment: “Camada limpa e tipada — tabelas Delta com schema enforçado”
-
-gold:
-
-catalog_name: lol_analytics
-
-name: gold
-
-comment: “Camada de agregação — métricas e resumos prontos para consumo”
-
+  schemas:
+    bronze:
+      catalog_name: lol_analytics
+      name: bronze
+      comment: “Raw Riot API JSON responses — Bronze layer (dbx-mls)”
+    silver:
+      catalog_name: lol_analytics
+      name: silver
+      comment: “Schema-enforced typed Delta tables — Silver layer (dbx-mls)”
+    gold:
+      catalog_name: lol_analytics
+      name: gold
+      comment: “Analytics aggregations — Gold layer (dbx-mls)”
 ```
 
 Declarar schemas como recursos DAB significa que `databricks bundle deploy` os reconcilia em todo deploy. Adicionar um novo job na Fase 2 exige apenas um novo arquivo em `resources/jobs/` — sem tocar no bundle raiz.

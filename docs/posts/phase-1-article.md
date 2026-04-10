@@ -52,17 +52,22 @@ bundle:
   databricks_cli_version: ">=0.250.0"
 
 include:
-  - resources/*.yml
   - resources/jobs/*.yml
+  - resources/schemas.yml
 
 variables:
   sp_client_id:
     description: "Service Principal client ID (UUID) used for prod run_as"
 
+permissions:
+  - service_principal_name: ${var.sp_client_id}
+    level: CAN_MANAGE
+
 targets:
   dev:
-    mode: development
     default: true
+    workspace:
+      root_path: /Workspace/Users/${var.sp_client_id}/.bundle/dbx-mls/dev
 
   prod:
     mode: production
@@ -72,7 +77,7 @@ targets:
       service_principal_name: ${var.sp_client_id}
 ```
 
-The `include:` directives pull in all resource definitions from the `resources/` directory. This means adding a new job in Phase 2 requires only a new YAML file in `resources/jobs/` — no changes to the root bundle. The `mode: development` flag adds a developer prefix to all resources in dev, preventing namespace collisions when multiple engineers deploy to the same workspace. The `run_as` block on the prod target ensures production jobs execute under the Service Principal's identity, not the deploying user — a hard governance requirement for audit compliance.
+The `include:` directives pull in job definitions and schema declarations explicitly — `resources/jobs/*.yml` picks up every job file added in future phases without touching the root bundle. The `permissions:` block grants the Service Principal `CAN_MANAGE` on the deployed bundle path; without it, the job cluster cannot read the deployed artifacts at runtime. The dev target has no `mode: development` — that flag was removed because it generates user-prefixed resource paths that the SP cannot access; instead, the dev target uses a fixed `root_path` scoped to the SP's workspace directory. The `run_as` block on the prod target ensures production jobs execute under the Service Principal's identity, not the deploying user — a hard governance requirement for audit compliance.
 
 One hard-won lesson: `workspace.host` cannot be set in `databricks.yml` with variable interpolation in CLI v0.295.0. The CLI rejects it for authentication fields. The correct pattern is `DATABRICKS_HOST` as an environment variable, set in the GitHub Actions workflow env block, never in the bundle file itself.
 
@@ -114,15 +119,15 @@ resources:
     bronze:
       catalog_name: lol_analytics
       name: bronze
-      comment: "Raw ingestion layer — all tables store source data as-ingested"
+      comment: "Raw Riot API JSON responses — Bronze layer (dbx-mls)"
     silver:
       catalog_name: lol_analytics
       name: silver
-      comment: "Cleaned and typed layer — schema-enforced Delta tables"
+      comment: "Schema-enforced typed Delta tables — Silver layer (dbx-mls)"
     gold:
       catalog_name: lol_analytics
       name: gold
-      comment: "Aggregation layer — business-ready metrics and summaries"
+      comment: "Analytics aggregations — Gold layer (dbx-mls)"
 ```
 
 ---
