@@ -6,7 +6,7 @@ That is Phase 1 of dbx-mls — a production Databricks Lakehouse portfolio built
 
 What shipped:
 
-- **OIDC Workload Identity Federation** — GitHub Actions authenticates via a short-lived OIDC token. Two federation policies: branch-scoped for dev CI, environment-scoped with an approval gate for prod. Zero stored credentials.
+- **OIDC Workload Identity Federation** — GitHub Actions authenticates via a short-lived OIDC token. Two Azure AD Federated Identity Credentials: branch-scoped for dev CI, environment-scoped with an approval gate for prod. Zero stored credentials.
 
 - **Databricks Asset Bundles (DABs)** — Every job, cluster, and schema declared as YAML. Dev and prod targets in one bundle. Prod target uses `run_as` with a Service Principal so production never runs as a human identity.
 

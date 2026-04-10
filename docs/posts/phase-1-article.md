@@ -12,33 +12,31 @@ Phase 1 covers the full foundation: no ingestion code, no Bronze or Silver table
 
 PATs (Personal Access Tokens) are the standard Databricks CI/CD starting point and a security liability. They are long-lived credentials that must be rotated manually, stored as GitHub secrets, and scoped to an individual user — meaning they expire with that user's employment. When someone's PAT leaks through a log line, you have a workspace-wide incident.
 
-OIDC Workload Identity Federation eliminates the credential entirely. GitHub Actions requests a short-lived OIDC token from GitHub's identity provider at runtime, presents it to the Databricks token endpoint, and receives a scoped bearer token for that job only. No stored credential. No rotation burden. No secret to leak.
+OIDC Workload Identity Federation eliminates the credential entirely. GitHub Actions requests a short-lived OIDC token from GitHub's identity provider at runtime. That token is passed to `azure/login@v2`, which authenticates to Azure AD and receives an Azure access token for the Service Principal. The Databricks CLI then uses `DATABRICKS_AUTH_TYPE: azure-cli` to obtain workspace access via Azure AD — not directly via a Databricks token endpoint. No credential is stored anywhere. No rotation burden. No secret to leak.
 
-The federation policy that makes this possible lives on the Databricks Service Principal, created via the Account Console CLI:
+The trust relationship that makes this possible is configured as Federated Identity Credentials on the App Registration in Azure AD — not as Databricks Account Console CLI commands. Two credentials are created (via Azure portal or `az ad app federated-credential create`):
 
 ```bash
-# Dev federation policy — branch-scoped, allows main branch CI runs
-databricks account service-principal-federation-policy create <SP_NUMERIC_ID> --json '{
-  "oidc_policy": {
-    "issuer": "https://token.actions.githubusercontent.com",
-    "audiences": ["https://github.com/<org>"],
-    "subject": "repo:<org>/dbx-mls:ref:refs/heads/main"
-  }
+# Dev credential — branch-scoped, trusts any run from the main branch
+az ad app federated-credential create --id <app-object-id> --parameters '{
+  "name": "github-dev",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:<org>/dbx-mls:ref:refs/heads/main",
+  "audiences": ["api://AzureADTokenExchange"]
 }'
 
-# Prod federation policy — environment-scoped, requires GitHub Environment approval gate
-databricks account service-principal-federation-policy create <SP_NUMERIC_ID> --json '{
-  "oidc_policy": {
-    "issuer": "https://token.actions.githubusercontent.com",
-    "audiences": ["https://github.com/<org>"],
-    "subject": "repo:<org>/dbx-mls:environment:prod"
-  }
+# Prod credential — environment-scoped, requires GitHub Environment approval gate
+az ad app federated-credential create --id <app-object-id> --parameters '{
+  "name": "github-prod",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:<org>/dbx-mls:environment:prod",
+  "audiences": ["api://AzureADTokenExchange"]
 }'
 ```
 
-Two separate federation policies serve two different trust boundaries. The dev policy trusts any push to the `main` branch. The prod policy trusts only a job running in the `prod` GitHub Environment, which requires a human approval gate. The subject claim format is the key detail: `ref:refs/heads/main` for branch-scoped, `environment:prod` for environment-scoped — and this match is case-sensitive. A lowercase `prod` in the policy subject and an uppercase `Prod` in the GitHub Environment name produce a cryptic 401 with no useful error message.
+Two separate Federated Identity Credentials serve two different trust boundaries. The dev credential trusts any push to the `main` branch. The prod credential trusts only a job running in the `prod` GitHub Environment, which requires a human approval gate. The subject claim format is the key detail: `ref:refs/heads/main` for branch-scoped, `environment:prod` for environment-scoped — and this match is case-sensitive. A lowercase `prod` in the credential subject and an uppercase `Prod` in the GitHub Environment name produce a cryptic 401 with no useful error message.
 
-GitHub Actions uses two repository-level variables — `DATABRICKS_HOST` and `DATABRICKS_CLIENT_ID` — and no secrets. Variables are visible in logs (appropriate for a non-sensitive workspace URL and SP application UUID). The credentials exchange happens entirely within the OIDC token flow.
+GitHub Actions uses three repository-level variables — `DATABRICKS_HOST`, `DATABRICKS_CLIENT_ID`, and `AZURE_TENANT_ID` — and no secrets. `DATABRICKS_CLIENT_ID` is the SP's Azure AD application UUID (used both by `azure/login` as the client ID and by the bundle as the `run_as` identity). `AZURE_TENANT_ID` is the Azure AD tenant UUID, required by `azure/login@v2`. `DATABRICKS_HOST` is the workspace URL. All three are non-sensitive (UUIDs and URLs) and safe in variables rather than secrets. The credentials exchange happens entirely within the Azure AD token flow.
 
 ---
 
@@ -144,11 +142,16 @@ jobs:
   validate-and-test:
     runs-on: ubuntu-latest
     env:
-      DATABRICKS_AUTH_TYPE: github-oidc
+      DATABRICKS_AUTH_TYPE: azure-cli
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+      BUNDLE_VAR_sp_client_id: ${{ vars.DATABRICKS_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.DATABRICKS_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -158,14 +161,14 @@ jobs:
       - run: pytest tests/unit/ --cov=src --cov-report=xml
 ```
 
-`permissions: id-token: write` is the line that enables OIDC token issuance. Without it, GitHub does not generate the token and the Databricks CLI cannot authenticate. `DATABRICKS_AUTH_TYPE: github-oidc` tells the CLI to use the OIDC flow rather than falling back to PAT lookup.
+`permissions: id-token: write` is the line that enables OIDC token issuance. Without it, GitHub does not generate the token and `azure/login@v2` cannot authenticate. `azure/login@v2` exchanges the GitHub OIDC token for an Azure AD access token on behalf of the Service Principal. `DATABRICKS_AUTH_TYPE: azure-cli` tells the Databricks CLI to use the Azure CLI credential (set up by `azure/login`) rather than falling back to PAT lookup or a Databricks-native OIDC flow. `BUNDLE_VAR_sp_client_id` supplies the `sp_client_id` bundle variable required by the prod `run_as` block.
 
-**`cd-dev.yml`** — runs on push to `main`. Deploys the dev target, then immediately runs the smoke test job. No `environment:` key — the branch-scoped federation policy matches the `ref:refs/heads/main` subject claim. If an `environment:` key were added here, the subject claim would switch to the environment format and the branch-scoped policy would reject it.
+**`cd-dev.yml`** — runs on push to `main`. Deploys the dev target, then immediately runs the smoke test job. Also uses `azure/login@v2` + `DATABRICKS_AUTH_TYPE: azure-cli` and passes `BUNDLE_VAR_sp_client_id` and `AZURE_TENANT_ID` in env. No `environment:` key — without it, the GitHub OIDC token subject claim uses the `ref:refs/heads/main` format, which matches the dev Federated Identity Credential. If an `environment:` key were added here, the subject claim would switch to the environment format and the dev credential would reject it.
 
-**`cd-prod.yml`** — runs on version tags. Uses `environment: prod` which triggers the GitHub Environment approval gate. The `concurrency` block prevents concurrent prod deploys:
+**`cd-prod.yml`** — runs on version tags. Also uses `azure/login@v2` + `DATABRICKS_AUTH_TYPE: azure-cli`. Uses `environment: prod` which triggers the GitHub Environment approval gate. The `concurrency` block prevents concurrent prod deploys:
 
 ```yaml
-environment: prod   # MUST match federation policy subject exactly — case-sensitive
+environment: prod   # MUST match Federated Identity Credential subject exactly — case-sensitive
 concurrency:
   group: prod-deploy
   cancel-in-progress: false
@@ -173,7 +176,7 @@ concurrency:
 
 `cancel-in-progress: false` is deliberate — a prod deploy in progress should never be cancelled by a newer push. The newer push queues behind it.
 
-The branch-scoped vs environment-scoped split is the key architectural decision: dev CI/CD requires no human approval (branch scope), prod requires a human to click "Approve" in the GitHub UI (environment scope). Same OIDC mechanism, different trust boundaries.
+The branch-scoped vs environment-scoped split is the key architectural decision: dev CI/CD requires no human approval (branch scope), prod requires a human to click "Approve" in the GitHub UI (environment scope). Same Azure AD OIDC mechanism, different trust boundaries.
 
 ---
 
@@ -220,7 +223,7 @@ If any validation fails, the CI run fails and the phase transition to Phase 2 is
 
 ## How I Built This
 
-I used Claude Code throughout Phase 1 as a scaffolding and documentation assistant. The YAML files, workflow templates, and this article were generated or refined with Claude's help. The architecture decisions — OIDC over PATs, the two-policy federation strategy, the SP ownership bootstrap sequence, the permanent smoke test pattern, and the choice to use DABs over Terraform — are engineering decisions made by me based on enterprise DE experience and the hiring signal I want this portfolio to project.
+I used Claude Code throughout Phase 1 as a scaffolding and documentation assistant. The YAML files, workflow templates, and this article were generated or refined with Claude's help. The architecture decisions — OIDC over PATs, the two Federated Identity Credentials strategy (branch-scoped dev, environment-scoped prod), the SP ownership bootstrap sequence, the permanent smoke test pattern, and the choice to use DABs over Terraform — are engineering decisions made by me based on enterprise DE experience and the hiring signal I want this portfolio to project.
 
 Claude is good at remembering YAML syntax and generating boilerplate I would otherwise have to look up. It is not the reason this architecture is correct. That part requires knowing what "correct" looks like for production Databricks workloads.
 
@@ -230,7 +233,7 @@ Claude is good at remembering YAML syntax and generating boilerplate I would oth
 
 Three things I would tell anyone setting up this stack for the first time:
 
-1. **OIDC subject claim format is case-sensitive and unforgiving.** `environment:prod` and `environment:Prod` are different strings. Test with a `databricks auth login` attempt before pushing to CI.
+1. **OIDC subject claim format is case-sensitive and unforgiving.** `environment:prod` and `environment:Prod` are different strings. The subject is set in the Azure AD Federated Identity Credential on the App Registration — a mismatch with the GitHub Environment name produces a silent 401 with no diagnostic message. Verify with `az ad app federated-credential list --id <app-object-id>` to confirm the credential subject matches the GitHub Environment name exactly before pushing to CI.
 
 2. **SP schema ownership is set on first deploy, not first table creation.** The bootstrap SQL grants must run before CI touches the workspace. There is no undo that does not involve dropping schemas.
 
