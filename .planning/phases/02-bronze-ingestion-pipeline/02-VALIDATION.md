@@ -38,10 +38,10 @@ created: 2026-04-13
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 02-01-01 | 01 | 1 | BRZ-01 | unit | `pytest tests/unit/test_riot_client.py -x -q` | ❌ W0 | ⬜ pending |
-| 02-01-02 | 01 | 1 | BRZ-01 | unit | `pytest tests/unit/test_riot_client.py::test_rate_limiter -x -q` | ❌ W0 | ⬜ pending |
-| 02-01-03 | 01 | 1 | BRZ-01 | unit | `pytest tests/unit/test_riot_client.py::test_429_handling -x -q` | ❌ W0 | ⬜ pending |
-| 02-02-01 | 02 | 1 | BRZ-02,BRZ-03 | unit | `pytest tests/unit/test_config.py -x -q` | ❌ W0 | ⬜ pending |
+| 02-01-01 | 01 | 1 | BRZ-01 | import-check | `python -c "from src.common.exceptions import RiotApiError, RateLimitError, ConfigError; from src.common.logger import get_logger; print('OK')"` | n/a | ⬜ pending |
+| 02-01-02 | 01 | 1 | BRZ-01 | import-check | `python -c "from src.riot_client import RiotRateLimiter, call_riot_api; print('import OK')"` | n/a | ⬜ pending |
+| 02-01-03 | 01 | 1 | BRZ-01 | import-check | `python -c "from src.riot_client import RiotRateLimiter; r=RiotRateLimiter(); print(r._sec_capacity, r._min_capacity)"` | n/a | ⬜ pending |
+| 02-02-01 | 02 | 2 | BRZ-02,BRZ-03 | import-check | `python -c "from src.config import PLATFORM_TO_REGION, get_region_host; assert len(PLATFORM_TO_REGION)==17; assert get_region_host('KR')=='asia.api.riotgames.com'; print('config OK')"` | n/a | ⬜ pending |
 | 02-03-01 | 03 | 2 | BRZ-04,BRZ-05,BRZ-06 | integration | manual SQL count verify | n/a | ⬜ pending |
 | 02-04-01 | 04 | 3 | BRZ-07,BRZ-08,BRZ-09 | integration | manual SQL count verify | n/a | ⬜ pending |
 | 02-05-01 | 05 | 4 | TEST-02,TEST-04 | unit+ci | `pytest tests/unit/ --cov=src` | ❌ W0 | ⬜ pending |
