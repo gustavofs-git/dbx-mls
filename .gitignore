@@ -19,6 +19,9 @@ env/
 # Databricks local state
 .databricks/
 
+# Posts — local only, not for version control
+docs/posts/
+
 # IDE and OS artifacts
 .idea/
 .vscode/
