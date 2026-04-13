@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-04-PLAN.md — Phase 01 complete
-last_updated: "2026-04-09T16:17:01.845Z"
+stopped_at: Completed 02-02-PLAN.md — src/config.py with 17-platform routing map
+last_updated: "2026-04-13T22:12:33.213Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 4
-  completed_plans: 4
+  completed_plans: 5
   percent: 0
 ---
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 *Updated after each plan completion*
 | Phase 01 P01 | 4 | 2 tasks | 16 files |
 | Phase 01 P04 | 240 | 2 tasks | 8 files |
+| Phase 02-bronze-ingestion-pipeline P02 | 3 | 1 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,7 @@ Key constraints affecting every phase:
 - [Phase 01]: Azure OIDC (azure-cli auth type) is the working auth path for this workspace — Databricks OIDC github-oidc auth type requires workspace-level federation policy not available in this tier
 - [Phase 01]: Use source: GIT for all DAB job notebook tasks — WORKSPACE source fails due to SP file access restrictions in Unity Catalog workspaces; GIT source pulls from public GitHub at runtime
 - [Phase 01]: data_security_mode: SINGLE_USER required on all job clusters in UC workspace — omitting causes cluster rejection
+- [Phase 02-bronze-ingestion-pipeline]: Centralized platform routing in src/config.py eliminates 404s — get_region_host() for Match-V5/Account-V1, get_platform_host() for League-Exp-V4/Summoner-V4
 
 ### Pending Todos
 
@@ -97,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T16:11:16.691Z
-Stopped at: Completed 01-04-PLAN.md — Phase 01 complete
+Last session: 2026-04-13T22:12:33.210Z
+Stopped at: Completed 02-02-PLAN.md — src/config.py with 17-platform routing map
 Resume file: None
