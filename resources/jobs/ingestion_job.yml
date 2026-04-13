@@ -1,4 +1,110 @@
-# Bronze ingestion job — defined in Phase 2.
-# Placeholder so databricks.yml include: resources/jobs/*.yml resolves without error.
+# Bronze ingestion job — full pipeline from League entries to match raw + enrichment.
+# Replaces the Phase 1 placeholder (jobs: {}).
+# Per D-01: all API calls run on Spark driver (plain Python loops). Spark used for Delta writes only.
+# Per D-02: restart-clean; MERGE idempotency ensures zero duplicate rows on re-run.
+
 resources:
-  jobs: {}
+  jobs:
+    ingestion_job:
+      name: dbx-mls-ingestion
+      timeout_seconds: 14400
+      parameters:
+        - name: region
+          default: KR
+        - name: tier
+          default: CHALLENGER
+      git_source:
+        git_url: https://github.com/gustavofs-git/dbx-mls
+        git_provider: gitHub
+        git_branch: main
+      job_clusters:
+        - job_cluster_key: job_cluster_shared
+          new_cluster:
+            spark_version: 16.4.x-scala2.12
+            node_type_id: Standard_F4s_v2
+            num_workers: 0
+            data_security_mode: SINGLE_USER
+            spark_conf:
+              spark.databricks.cluster.profile: singleNode
+              spark.master: local[*]
+            autotermination_minutes: 0
+            custom_tags:
+              project: dbx-mls
+              job: ingestion
+              ResourceClass: SingleNode
+      tasks:
+        - task_key: league_entries_task
+          notebook_task:
+            notebook_path: notebooks/ingest_league_entries
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+
+        - task_key: match_ids_task
+          depends_on:
+            - task_key: league_entries_task
+          notebook_task:
+            notebook_path: notebooks/ingest_match_ids
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+
+        - task_key: match_raw_task
+          depends_on:
+            - task_key: match_ids_task
+          notebook_task:
+            notebook_path: notebooks/ingest_match_raw
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+
+        - task_key: match_timeline_task
+          depends_on:
+            - task_key: match_raw_task
+          notebook_task:
+            notebook_path: notebooks/ingest_match_timeline
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+
+        - task_key: summoner_task
+          depends_on:
+            - task_key: match_ids_task
+          notebook_task:
+            notebook_path: notebooks/ingest_summoner
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
+
+        - task_key: account_task
+          depends_on:
+            - task_key: summoner_task
+          notebook_task:
+            notebook_path: notebooks/ingest_account
+            source: GIT
+          job_cluster_key: job_cluster_shared
+          libraries:
+            - pypi:
+                package: requests>=2.32.0
+            - pypi:
+                package: tenacity>=9.0.0
