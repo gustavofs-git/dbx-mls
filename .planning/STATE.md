@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-01-PLAN.md — Riot API client core
-last_updated: "2026-04-13T22:19:25.726Z"
+stopped_at: Completed 02-03-PLAN.md — bronze ingestion chain
+last_updated: "2026-04-13T22:25:55.577Z"
 last_activity: 2026-04-13
 progress:
   total_phases: 5
@@ -28,7 +28,7 @@ minutes and see a real, parameterized, enterprise-pattern data product — not a
 ## Current Position
 
 Phase: 02 (bronze-ingestion-pipeline) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-04-13
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 | Phase 01 P04 | 240 | 2 tasks | 8 files |
 | Phase 02-bronze-ingestion-pipeline P02 | 3 | 1 tasks | 6 files |
 | Phase 02 P01 | 3 | 2 tasks | 6 files |
+| Phase 02 P03 | 3 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ Key constraints affecting every phase:
 - [Phase 02-01]: time.sleep(0.05) in acquire() is lock-release wait only — token bucket IS the primary throttle; sleep must not be used as throttle per plan constraint
 - [Phase 02-01]: RiotRateLimiter passed as parameter to call_riot_api() per D-01 — never instantiated internally
 - [Phase 02-01]: 404 raises RiotApiError(404, url) explicitly before raise_for_status() — allows downstream to catch 404 vs generic HTTP errors
+- [Phase 02]: ingestion_log CREATE TABLE in ingest_league_entries.py only (first DAG task); other notebooks append-write
+- [Phase 02]: LEFT ANTI JOIN pre-check in bronze_match_raw.py before any API calls — avoids quota waste on restarts (D-02 pattern)
+- [Phase 02]: All bronze MERGE statements use WHEN NOT MATCHED THEN INSERT * only — no UPDATE clause; raw Bronze stores immutable snapshots
 
 ### Pending Todos
 
@@ -103,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13T22:19:25.724Z
-Stopped at: Completed 02-01-PLAN.md — Riot API client core
+Last session: 2026-04-13T22:25:55.574Z
+Stopped at: Completed 02-03-PLAN.md — bronze ingestion chain
 Resume file: None

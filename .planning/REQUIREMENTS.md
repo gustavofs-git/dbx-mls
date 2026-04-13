@@ -29,13 +29,13 @@
 - [x] **BRZ-01**: `RiotApiClient` class in `src/riot_client.py` with dual-bucket rate limiter (20 req/sec + 100 req/2min) and `Retry-After` header parsing
 - [x] **BRZ-02**: Region and Tier are DAB job parameters (`region`, `tier`) — never hardcoded; KR/CHALLENGER is the default value only
 - [x] **BRZ-03**: Platform-to-routing-host mapping config (`KR` → `asia`, `NA1` → `americas`, etc.) in `src/config.py` — covers all 17 Riot platforms
-- [ ] **BRZ-04**: `bronze.league_entries` table populated from League-Exp-V4 (paginated until empty page), raw JSON as STRING with `_ingested_at`, `_source_url`, `_region`, `_tier` metadata columns
-- [ ] **BRZ-05**: `bronze.match_ids` table populated from Match-V5 `/by-puuid/{puuid}/ids`, with MERGE deduplication on `(puuid, match_id)` — no re-fetching already-ingested IDs
-- [ ] **BRZ-06**: `bronze.match_raw` table populated from Match-V5 `/matches/{matchId}`, with MERGE deduplication on `match_id` — full JSON as STRING
+- [x] **BRZ-04**: `bronze.league_entries` table populated from League-Exp-V4 (paginated until empty page), raw JSON as STRING with `_ingested_at`, `_source_url`, `_region`, `_tier` metadata columns
+- [x] **BRZ-05**: `bronze.match_ids` table populated from Match-V5 `/by-puuid/{puuid}/ids`, with MERGE deduplication on `(puuid, match_id)` — no re-fetching already-ingested IDs
+- [x] **BRZ-06**: `bronze.match_raw` table populated from Match-V5 `/matches/{matchId}`, with MERGE deduplication on `match_id` — full JSON as STRING
 - [ ] **BRZ-07**: `bronze.match_timeline_raw` table populated from Match-V5 `/matches/{matchId}/timeline`, separately from match detail (distinct DAB task, independent rate limit budget)
 - [ ] **BRZ-08**: `bronze.summoner_raw` table populated from Summoner-V4 by PUUID (enrichment, non-blocking)
 - [ ] **BRZ-09**: `bronze.account_raw` table populated from Account-V1 by PUUID (enrichment, non-blocking)
-- [ ] **BRZ-10**: All Bronze tables are Delta format, UC three-part names (`lol_analytics.bronze.*`), no DBFS paths, no Hive Metastore
+- [x] **BRZ-10**: All Bronze tables are Delta format, UC three-part names (`lol_analytics.bronze.*`), no DBFS paths, no Hive Metastore
 
 ### Silver Transformation (SLV)
 
@@ -132,13 +132,13 @@
 | BRZ-01 | Phase 2 | Complete |
 | BRZ-02 | Phase 2 | Complete |
 | BRZ-03 | Phase 2 | Complete |
-| BRZ-04 | Phase 2 | Pending |
-| BRZ-05 | Phase 2 | Pending |
-| BRZ-06 | Phase 2 | Pending |
+| BRZ-04 | Phase 2 | Complete |
+| BRZ-05 | Phase 2 | Complete |
+| BRZ-06 | Phase 2 | Complete |
 | BRZ-07 | Phase 2 | Pending |
 | BRZ-08 | Phase 2 | Pending |
 | BRZ-09 | Phase 2 | Pending |
-| BRZ-10 | Phase 2 | Pending |
+| BRZ-10 | Phase 2 | Complete |
 | TEST-02 | Phase 2 | Pending |
 | TEST-04 | Phase 2 | Pending |
 | SLV-01 | Phase 3 | Pending |
