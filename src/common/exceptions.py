@@ -5,6 +5,7 @@ Typed exception hierarchy for the Riot API client and ingestion pipeline.
 
 class ConfigError(Exception):
     """Raised when an unknown platform is looked up in PLATFORM_TO_REGION."""
+
     pass
 
 
@@ -19,4 +20,5 @@ class RiotApiError(Exception):
 
 class RateLimitError(RiotApiError):
     """Raised when rate limit handling exhausts retries (future use)."""
+
     pass

@@ -18,6 +18,11 @@ class _JsonFormatter(logging.Formatter):
 
 
 def get_logger(name: str) -> logging.Logger:
+    """Return a JSON-formatted logger for the given name.
+
+    Idempotent — calling get_logger() multiple times with the same name
+    returns the same logger instance without adding duplicate handlers.
+    """
     logger = logging.getLogger(name)
     if not logger.handlers:
         handler = logging.StreamHandler()
