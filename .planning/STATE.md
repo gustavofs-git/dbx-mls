@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md — bronze ingestion chain
-last_updated: "2026-04-13T22:25:55.577Z"
+stopped_at: Completed 02-04-PLAN.md — enrichment ingestion modules (timeline, summoner, account)
+last_updated: "2026-04-13T22:30:27.042Z"
 last_activity: 2026-04-13
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
+  completed_plans: 8
   percent: 0
 ---
 
@@ -28,7 +28,7 @@ minutes and see a real, parameterized, enterprise-pattern data product — not a
 ## Current Position
 
 Phase: 02 (bronze-ingestion-pipeline) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-04-13
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 | Phase 02-bronze-ingestion-pipeline P02 | 3 | 1 tasks | 6 files |
 | Phase 02 P01 | 3 | 2 tasks | 6 files |
 | Phase 02 P03 | 3 | 2 tasks | 7 files |
+| Phase 02-bronze-ingestion-pipeline P04 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,7 @@ Key constraints affecting every phase:
 - [Phase 02]: ingestion_log CREATE TABLE in ingest_league_entries.py only (first DAG task); other notebooks append-write
 - [Phase 02]: LEFT ANTI JOIN pre-check in bronze_match_raw.py before any API calls — avoids quota waste on restarts (D-02 pattern)
 - [Phase 02]: All bronze MERGE statements use WHEN NOT MATCHED THEN INSERT * only — no UPDATE clause; raw Bronze stores immutable snapshots
+- [Phase 02-bronze-ingestion-pipeline]: Summoner-V4 uses PLATFORM host (get_platform_host) — not regional; Account-V1 uses REGIONAL host (get_region_host); timeline anti-join sources from match_raw not match_ids
 
 ### Pending Todos
 
@@ -107,6 +109,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13T22:25:55.574Z
-Stopped at: Completed 02-03-PLAN.md — bronze ingestion chain
+Last session: 2026-04-13T22:30:27.038Z
+Stopped at: Completed 02-04-PLAN.md — enrichment ingestion modules (timeline, summoner, account)
 Resume file: None
