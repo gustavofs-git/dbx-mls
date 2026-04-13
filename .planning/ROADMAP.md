@@ -220,8 +220,8 @@ BRZ-10, TEST-02, TEST-04
 **Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: `src/riot_client.py` — dual-bucket rate limiter and API client
-- [ ] 02-02: `src/config.py` — platform-to-routing mapping and job parameter handling
+- [x] 02-01: `src/riot_client.py` — dual-bucket rate limiter and API client
+- [x] 02-02: `src/config.py` — platform-to-routing mapping and job parameter handling
 - [ ] 02-03: Bronze ingestion — League entries, match IDs, and match raw (core chain)
 - [ ] 02-04: Bronze ingestion — Match timeline, summoner, and account (enrichment tasks)
 - [ ] 02-05: DAB ingestion job definition, unit tests, and CI integration
@@ -997,7 +997,7 @@ documented sufficiently to reproduce in under 15 minutes.
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure, Governance & CI/CD Foundation | 4/4 | Complete   | 2026-04-09 |
-| 2. Bronze Ingestion Pipeline | 0/5 | Not started | - |
+| 2. Bronze Ingestion Pipeline | 2/5 | In Progress|  |
 | 3. Silver Transformation Layer | 0/5 | Not started | - |
 | 4. Gold Analytics Layer | 0/3 | Not started | - |
 | 5. Portfolio Polish, MCP Showcase & LinkedIn Posts | 0/3 | Not started | - |

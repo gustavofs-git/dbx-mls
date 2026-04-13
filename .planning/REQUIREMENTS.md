@@ -26,7 +26,7 @@
 
 ### Bronze Ingestion (BRZ)
 
-- [ ] **BRZ-01**: `RiotApiClient` class in `src/riot_client.py` with dual-bucket rate limiter (20 req/sec + 100 req/2min) and `Retry-After` header parsing
+- [x] **BRZ-01**: `RiotApiClient` class in `src/riot_client.py` with dual-bucket rate limiter (20 req/sec + 100 req/2min) and `Retry-After` header parsing
 - [x] **BRZ-02**: Region and Tier are DAB job parameters (`region`, `tier`) — never hardcoded; KR/CHALLENGER is the default value only
 - [x] **BRZ-03**: Platform-to-routing-host mapping config (`KR` → `asia`, `NA1` → `americas`, etc.) in `src/config.py` — covers all 17 Riot platforms
 - [ ] **BRZ-04**: `bronze.league_entries` table populated from League-Exp-V4 (paginated until empty page), raw JSON as STRING with `_ingested_at`, `_source_url`, `_region`, `_tier` metadata columns
@@ -129,7 +129,7 @@
 | CICD-04 | Phase 1 | Complete |
 | CICD-05 | Phase 1 | Complete |
 | CICD-06 | Phase 1 | Complete |
-| BRZ-01 | Phase 2 | Pending |
+| BRZ-01 | Phase 2 | Complete |
 | BRZ-02 | Phase 2 | Complete |
 | BRZ-03 | Phase 2 | Complete |
 | BRZ-04 | Phase 2 | Pending |

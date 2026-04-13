@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-PLAN.md — src/config.py with 17-platform routing map
-last_updated: "2026-04-13T22:12:33.213Z"
-last_activity: 2026-04-13 -- Phase 02 execution started
+stopped_at: Completed 02-01-PLAN.md — Riot API client core
+last_updated: "2026-04-13T22:19:25.726Z"
+last_activity: 2026-04-13
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -28,9 +28,9 @@ minutes and see a real, parameterized, enterprise-pattern data product — not a
 ## Current Position
 
 Phase: 02 (bronze-ingestion-pipeline) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 02
-Last activity: 2026-04-13 -- Phase 02 execution started
+Plan: 2 of 5
+Status: Ready to execute
+Last activity: 2026-04-13
 
 Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 | Phase 01 P01 | 4 | 2 tasks | 16 files |
 | Phase 01 P04 | 240 | 2 tasks | 8 files |
 | Phase 02-bronze-ingestion-pipeline P02 | 3 | 1 tasks | 6 files |
+| Phase 02 P01 | 3 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,9 @@ Key constraints affecting every phase:
 - [Phase 01]: Use source: GIT for all DAB job notebook tasks — WORKSPACE source fails due to SP file access restrictions in Unity Catalog workspaces; GIT source pulls from public GitHub at runtime
 - [Phase 01]: data_security_mode: SINGLE_USER required on all job clusters in UC workspace — omitting causes cluster rejection
 - [Phase 02-bronze-ingestion-pipeline]: Centralized platform routing in src/config.py eliminates 404s — get_region_host() for Match-V5/Account-V1, get_platform_host() for League-Exp-V4/Summoner-V4
+- [Phase 02-01]: time.sleep(0.05) in acquire() is lock-release wait only — token bucket IS the primary throttle; sleep must not be used as throttle per plan constraint
+- [Phase 02-01]: RiotRateLimiter passed as parameter to call_riot_api() per D-01 — never instantiated internally
+- [Phase 02-01]: 404 raises RiotApiError(404, url) explicitly before raise_for_status() — allows downstream to catch 404 vs generic HTTP errors
 
 ### Pending Todos
 
@@ -99,6 +103,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13T22:12:33.210Z
-Stopped at: Completed 02-02-PLAN.md — src/config.py with 17-platform routing map
+Last session: 2026-04-13T22:19:25.724Z
+Stopped at: Completed 02-01-PLAN.md — Riot API client core
 Resume file: None
