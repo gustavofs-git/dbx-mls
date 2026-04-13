@@ -12,7 +12,18 @@ A person can run this pipeline end-to-end in under 30 minutes and see a real, pa
 
 ### Validated
 
-(None yet — ship to validate)
+**Validated in Phase 01 (infrastructure-governance-ci-cd-foundation):**
+- Azure Databricks workspace with Unity Catalog enabled
+- `lol_analytics` catalog with `bronze`, `silver`, `gold` schemas
+- DABs with `dev` and `prod` targets, GitHub Actions CI/CD (`validate → pytest → deploy-dev` on push, manual prod on tag)
+- OIDC-based SP auth (azure-cli type); `source: GIT` for notebook tasks in UC workspaces
+
+**Validated in Phase 02 (bronze-ingestion-pipeline):**
+- All 6 Bronze Delta tables defined and ingested via MERGE + anti-join patterns: `league_entries`, `match_ids`, `match_raw`, `match_timeline_raw`, `summoner_raw`, `account_raw`
+- Riot API rate limiting (dual-bucket: 20 req/sec + 100 req/2min) with `Retry-After` handling
+- 17-platform routing map centralised in `src/config.py` (platform vs regional host disambiguation)
+- `ingestion_job.yml` — 6-task DAB DAG with correct dependency chain
+- 55 unit tests passing with zero live API calls
 
 ### Active
 
@@ -125,4 +136,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after initialization*
+*Last updated: 2026-04-13 — Phase 02 bronze-ingestion-pipeline complete*
