@@ -56,9 +56,9 @@
 ### Testing (TEST)
 
 - [ ] **TEST-01**: Unit tests for all Silver transformation functions using `pyspark` local mode + `chispa` DataFrame assertions
-- [ ] **TEST-02**: Unit tests for `RiotApiClient` rate limiter logic (mocked HTTP responses)
+- [x] **TEST-02**: Unit tests for `RiotApiClient` rate limiter logic (mocked HTTP responses)
 - [ ] **TEST-03**: Unit tests for schema definitions (field count, type assertions)
-- [ ] **TEST-04**: `pytest` runs locally on Linux without a live Databricks cluster (Java 11 installed, `JAVA_HOME` set)
+- [x] **TEST-04**: `pytest` runs locally on Linux without a live Databricks cluster (Java 11 installed, `JAVA_HOME` set)
 - [ ] **TEST-05**: Test coverage report generated on CI runs
 
 ### Gold & Analytics (GOLD)
@@ -139,8 +139,8 @@
 | BRZ-08 | Phase 2 | Complete |
 | BRZ-09 | Phase 2 | Complete |
 | BRZ-10 | Phase 2 | Complete |
-| TEST-02 | Phase 2 | Pending |
-| TEST-04 | Phase 2 | Pending |
+| TEST-02 | Phase 2 | Complete |
+| TEST-04 | Phase 2 | Complete |
 | SLV-01 | Phase 3 | Pending |
 | SLV-02 | Phase 3 | Pending |
 | SLV-03 | Phase 3 | Pending |

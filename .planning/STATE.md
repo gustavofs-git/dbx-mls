@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.295.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-04-PLAN.md — enrichment ingestion modules (timeline, summoner, account)
-last_updated: "2026-04-13T22:30:27.042Z"
+stopped_at: Completed 02-05-PLAN.md — Phase 02 plan 05 complete
+last_updated: "2026-04-13T22:37:08.792Z"
 last_activity: 2026-04-13
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
   percent: 0
 ---
 
@@ -28,7 +28,7 @@ minutes and see a real, parameterized, enterprise-pattern data product — not a
 ## Current Position
 
 Phase: 02 (bronze-ingestion-pipeline) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-04-13
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%  (0/20 plans complete)
 | Phase 02 P01 | 3 | 2 tasks | 6 files |
 | Phase 02 P03 | 3 | 2 tasks | 7 files |
 | Phase 02-bronze-ingestion-pipeline P04 | 2 | 2 tasks | 6 files |
+| Phase 02-bronze-ingestion-pipeline P05 | 25 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,9 @@ Key constraints affecting every phase:
 - [Phase 02]: LEFT ANTI JOIN pre-check in bronze_match_raw.py before any API calls — avoids quota waste on restarts (D-02 pattern)
 - [Phase 02]: All bronze MERGE statements use WHEN NOT MATCHED THEN INSERT * only — no UPDATE clause; raw Bronze stores immutable snapshots
 - [Phase 02-bronze-ingestion-pipeline]: Summoner-V4 uses PLATFORM host (get_platform_host) — not regional; Account-V1 uses REGIONAL host (get_region_host); timeline anti-join sources from match_raw not match_ids
+- [Phase 02-bronze-ingestion-pipeline]: pytest.ini pythonpath=. required for src/ imports without pip install — added as auto-fix
+- [Phase 02-bronze-ingestion-pipeline]: summoner_task depends on match_ids_task (parallel to timeline) — reduces wall-clock time for enrichment chain
+- [Phase 02-bronze-ingestion-pipeline]: ingestion_job.yml uses timeout_seconds=14400 and source=GIT on all 6 notebook tasks — consistent with Phase 1 SP file access pattern
 
 ### Pending Todos
 
@@ -109,6 +113,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13T22:30:27.038Z
-Stopped at: Completed 02-04-PLAN.md — enrichment ingestion modules (timeline, summoner, account)
+Last session: 2026-04-13T22:37:08.790Z
+Stopped at: Completed 02-05-PLAN.md — Phase 02 plan 05 complete
 Resume file: None

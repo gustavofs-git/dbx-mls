@@ -224,7 +224,7 @@ Plans:
 - [x] 02-02: `src/config.py` — platform-to-routing mapping and job parameter handling
 - [x] 02-03: Bronze ingestion — League entries, match IDs, and match raw (core chain)
 - [x] 02-04: Bronze ingestion — Match timeline, summoner, and account (enrichment tasks)
-- [ ] 02-05: DAB ingestion job definition, unit tests, and CI integration
+- [x] 02-05: DAB ingestion job definition, unit tests, and CI integration
 
 **UI hint**: no
 
