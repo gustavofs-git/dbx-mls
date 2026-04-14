@@ -1,7 +1,9 @@
 # Databricks notebook source
 # COMMAND ----------
 import os, sys
-_repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# __file__ is not defined in Databricks notebook execution context.
+# In Git-source DAB jobs, cwd is set to the repo root — use that directly.
+_repo_root = os.getcwd()
 if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 
