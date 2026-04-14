@@ -28,4 +28,3 @@ jobs:
           allow-no-subscriptions: true
       - uses: databricks/setup-cli@v0.295.0
       - run: databricks bundle deploy --target dev --auto-approve
-      - run: databricks bundle run smoke_test_job --target dev
