@@ -425,6 +425,18 @@ Account-V1 uses REGIONAL routing (`asia.api.riotgames.com`). Both handled by `co
 
 ---
 
+### Phase 02.1: Workspace Recreation — Eliminate NAT Gateway Cost (INSERTED)
+
+**Goal:** Delete the current Databricks workspace (NAT gateway cannot be manually removed due to deny assignments), recreate it with `--enable-no-public-ip false` to eliminate the ~R$35/month idle cost, restore all runtime state (SP admin, secrets, bundle deploy), and commit a LinkedIn article documenting the cost trap and fix.
+
+**Requirements**: D-01 through D-22 (see 02.1-CONTEXT.md)
+**Depends on:** Phase 2
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02.1-01-PLAN.md — Infrastructure: delete workspace, recreate with public IPs, SP admin, secrets, bundle deploy, update docs
+- [ ] 02.1-02-PLAN.md — LinkedIn article and post: NAT gateway cost trap war story committed to docs/posts/
+
 ### Phase 3: Silver Transformation Layer
 
 **Goal**: Parse all Bronze raw JSON strings into typed, schema-enforced, Liquid Clustered Delta
