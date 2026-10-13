@@ -1,0 +1,92 @@
+site_name: mylolstats
+site_description: A portfolio data platform on Databricks Free Edition — raw VARIANT bronze, a harmonized layer, and a virtual consumption layer.
+site_url: https://gustavofs-git.github.io/dbx-mls/
+repo_url: https://github.com/gustavofs-git/dbx-mls
+repo_name: gustavofs-git/dbx-mls
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Data model: architecture/data-model.md
+      - Code architecture: architecture/code-architecture.md
+      - Naming conventions: architecture/naming-conventions.md
+  - Operations:
+      - Runbook: operations/runbook.md
+      - Feasibility validation plan: operations/validation-plan.md
+      - Quotas and retention: operations/quotas-and-retention.md
+  - Project:
+      - Roadmap: project/roadmap.md
+      - Ways of working: project/ways-of-working.md
+      - Open decisions: project/open-decisions.md
+  - Decision records:
+      - Index: adr/index.md
+      - 0001 Platform choice: adr/0001-platform-databricks-free-edition.md
+      - 0002 Single workspace, two bundle targets: adr/0002-single-workspace-two-bundle-targets.md
+      - 0003 Data source scope: adr/0003-data-source-scope-kr-challenger.md
+      - 0004 Raw payload as VARIANT: adr/0004-raw-payload-as-variant.md
+      - 0005 Landing zone before bronze: adr/0005-landing-zone-before-bronze.md
+      - 0006 Beyond medallion: adr/0006-two-physical-layers-virtual-consumption.md
+      - 0007 Declarative pipeline plus imperative ingestion: adr/0007-declarative-pipeline-imperative-ingestion.md
+      - 0008 Data quality strategy: adr/0008-data-quality-strategy.md
+      - 0009 Native expectations: adr/0009-native-expectations-over-external-dq.md
+      - 0010 PUUID pseudonymization: adr/0010-puuid-pseudonymization.md
+      - 0011 Asset Bundles as IaC: adr/0011-asset-bundles-as-iac.md
+      - 0012 CI/CD design: adr/0012-cicd-github-actions-pat.md
+      - 0013 Docs as code: adr/0013-docs-as-code-mkdocs.md
+      - 0014 Run cadence: adr/0014-weekly-cadence-daily-maintenance.md
+      - 0015 Timeline event filtering: adr/0015-timeline-event-type-filtering.md
+      - 0016 AI usage scope: adr/0016-ai-usage-scope.md
+      - 0017 Single long-form article: adr/0017-single-article-over-post-series.md
